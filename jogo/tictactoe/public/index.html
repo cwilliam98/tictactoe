@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="tictactoe.css">
+</head>
+<body>
+    <div>
+        <div class="center">Placar <p></p><div class="placar">X <p id="X"></p></div> <div class="placar">O <p id="O"></p></div></div>
+
+        <div class="grid grid-collum collumns-3" id="tictactoe">
+            <div class="item" id="0"></div>
+            <div class="item" id="1"></div>
+            <div class="item" id="2"></div>
+            <div class="item" id="3"></div>
+            <div class="item" id="4"></div>
+            <div class="item" id="5"></div>
+            <div class="item" id="6"></div>
+            <div class="item" id="7"></div>
+            <div class="item" id="8"></div>
+        </div>
+        <div id="ganhador"></div>
+    </div>
+    <script type="module">
+        import createGame from './tictactoe.js'
+        const game = createGame()
+
+        
+var element = [];
+var jogador = '';
+var posicoes = document.querySelectorAll(".item");
+var divJogo = document.getElementById("tictactoe");
+
+if(!localStorage.getItem('X') || !localStorage.getItem('O')){
+    localStorage.setItem('X', 0);
+    localStorage.setItem('O', 0);
+}
+
+document.getElementById("X").innerHTML = localStorage.getItem('X');
+document.getElementById("O").innerHTML = localStorage.getItem('O');
+
+for (let i = 0; i < posicoes.length; i++) {
+    element.push(document.getElementById(posicoes[i].id));
+    element[i].addEventListener("click", function (items) {
+
+        if (items.toElement.innerHTML === "") {
+            if (items.toElement.outerHTML != '<img class="img" src="x.jpg">' ||
+            items.toElement.outerHTML != '<img class="img" src="x.jpg">') {
+                jogador = game.alternaJogador(jogador);
+
+                if (jogador == "X") {
+                    items.srcElement.innerHTML = '<img class="img" src="x.jpg"></img>';
+                    items.srcElement.value = jogador;
+                } else {
+                    items.srcElement.innerHTML = '<img class="img" src="circle.png"></img>';
+                    items.srcElement.value = jogador;
+                }
+                var ganhador = game.verificaGanhador(element, jogador);
+                // console.log(ganhador);
+                if (ganhador) {
+                    if (ganhador == 'X') {
+                        divJogo.innerHTML = '<div class="ganhador"><img class="img" src="x.jpg"></img></div>' + " <h2>Vencedor</h2>";
+                    } else if (ganhador == 'OX') {
+                        divJogo.innerHTML = '<div class="empate"><img class="img2" src="circle.png"></img><img class="img1" src="x.jpg"></img></div>' + " <h2>Empate</h2>";
+
+                    } else {
+                        divJogo.innerHTML = '<div class="ganhador"><img class="img" src="circle.png"></img></div>' + " <h2>Vencedor</h2>";
+                    }
+                    var qtdVitorias = parseInt(localStorage.getItem(ganhador)) == "" ? 0 : parseInt(localStorage.getItem(ganhador));
+                    localStorage.setItem(ganhador, qtdVitorias + 1);
+                    document.getElementById("X").innerHTML = localStorage.getItem('X');
+                    document.getElementById("O").innerHTML = localStorage.getItem('O');
+
+
+                    var button = document.createElement("button");
+                    button.innerHTML = "Reiniciar";
+                    divJogo.className = "grid center";
+                    button.className = "btnReiniciar";
+                    divJogo.appendChild(button);
+                    document.querySelector(".btnReiniciar").addEventListener("click", function (items) {
+                        location.reload();
+                    }, false);
+                }
+            }
+        }
+    }, false);
+}
+    </script>
+</body>
+</html>
