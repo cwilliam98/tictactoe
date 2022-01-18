@@ -43,10 +43,10 @@ document.getElementById("O").innerHTML = localStorage.getItem('O');
 for (let i = 0; i < posicoes.length; i++) {
     element.push(document.getElementById(posicoes[i].id));
     element[i].addEventListener("click", function (items) {
-
-        if (items.toElement.innerHTML === "") {
-            if (items.toElement.outerHTML != '<img class="img" src="x.jpg">' ||
-            items.toElement.outerHTML != '<img class="img" src="x.jpg">') {
+        
+        if (items.srcElement.innerHTML === "") {
+            if (items.srcElement.outerHTML != '<img class="img" src="x.jpg">' ||
+            items.srcElement.outerHTML != '<img class="img" src="x.jpg">') {
                 jogador = game.alternaJogador(jogador);
 
                 if (jogador == "X") {
